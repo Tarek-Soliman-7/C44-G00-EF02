@@ -13,5 +13,9 @@ namespace C44_G00_EF02.Models
         public int Course_Id { get; set; }
         [Range(1, 10)]
         public int? Evaluate { get; set; }
+
+        public Course Course { get; set; } = null!;
+        public Instructor Instructor { get; set; } = null!;
+
     }
 }

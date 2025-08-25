@@ -11,11 +11,13 @@ namespace C44_G00_EF02.Configurations
 {
     internal class CourseConfiguration : IEntityTypeConfiguration<Course>
     {
-        public void Configure(EntityTypeBuilder<Course> B)
+        public void Configure(EntityTypeBuilder<Course> C)
         {
-            B
+            C
                 .HasIndex(C => C.Name)
                 .IsUnique();
+
+
         }
     }
 }

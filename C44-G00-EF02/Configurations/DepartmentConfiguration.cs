@@ -14,6 +14,23 @@ namespace C44_G00_EF02.Configurations
         public void Configure(EntityTypeBuilder<Department> D)
         {
             D.HasCheckConstraint("CK_Department_HiringDate", "HiringDate <= GETDATE()");
+
+            D
+                .HasOne(D => D.Manager)
+                .WithOne(I => I.MangedDepartment)
+                .HasForeignKey<Department>(D => D.Ins_ID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            D
+                .HasMany(D=>D.Instructors)
+                .WithOne(I=>I.InstructorDepartment)
+                .HasForeignKey(I=>I.Dept_ID)
+                .OnDelete(DeleteBehavior.Restrict);
+            D   
+                .HasMany(D=>D.Students)
+                .WithOne(S=>S.Department)
+                .HasForeignKey(S=>S.Dep_Id)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

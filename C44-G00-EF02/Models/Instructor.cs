@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,14 @@ namespace C44_G00_EF02.Models
         public string? Address { get; set; }
         [Range(0, int.MaxValue)]
         public decimal HourRateBouns {  get; set; }
+        [InverseProperty(nameof(Department.Manager))]
+        public Department? MangedDepartment { get; set; }
+        [InverseProperty(nameof(Department.Instructors))]
+        public Department InstructorDepartment { get; set; }
+        [ForeignKey(nameof(InstructorDepartment))]
         public int Dept_ID { get; set; }
+        [InverseProperty(nameof(Course_Inst.Instructor))]
+        public ICollection<Course_Inst>? Course_Insts { get; set; } = new HashSet<Course_Inst>();
+
     }
 }

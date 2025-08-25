@@ -14,5 +14,8 @@ namespace C44_G00_EF02.Models
         [Range(0,100)]
         public int Grade { get; set; }
 
+        public Course Course { get; set; } = null!;
+        public Student Student { get; set; } = null!;
+
     }
 }
