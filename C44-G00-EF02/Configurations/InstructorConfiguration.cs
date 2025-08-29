@@ -19,12 +19,12 @@ namespace C44_G00_EF02.Configurations
             I
                 .Property(I => I.HourRateBouns)
                 .HasColumnType("decimal(10,2)");
-                
-            //I
-            //    .HasOne(I=>I.MangedDepartment)
-            //    .WithOne(D=>D.Manager)
-            //    .HasForeignKey<Department>(D=>D.Ins_ID)
-            //    .OnDelete(DeleteBehavior.Restrict);
+
+            I
+                .HasOne(I => I.MangedDepartment)
+                .WithOne(D => D.Manager)
+                .HasForeignKey<Department>(D => D.Ins_ID)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //I
             //    .HasOne(I=>I.InstructorDepartment)

@@ -22,10 +22,11 @@ namespace C44_G00_EF02.Models
         public string? Description { get; set; }
 
         public int Top_ID {  get; set; }
-        [InverseProperty(nameof(Topic.Courses))]
-        public Topic Topic { get; set; }
 
-       // public ICollection<Student> Students { get; set; } = new HashSet<Student>(); 
+        [InverseProperty(nameof(Topic.Courses))]
+        public Topic Topic { get; set; } = null!;
+
+        public ICollection<Student> Students { get; set; } = new HashSet<Student>();
         [InverseProperty(nameof(Stud_Course.Course))]
         public ICollection<Stud_Course> stud_courses { get; set; } = new HashSet<Stud_Course>();
 

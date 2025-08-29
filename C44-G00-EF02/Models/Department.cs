@@ -17,8 +17,9 @@ namespace C44_G00_EF02.Models
         [MaxLength(100)]
         public string Name { get; set; }
 
-        [InverseProperty(nameof(Instructor.MangedDepartment))]
+        //[InverseProperty(nameof(Instructor.MangedDepartment))]
         public Instructor Manager { get; set; }
+        //[ForeignKey(nameof(Manager))]
         public int? Ins_ID { get; set; }
         public DateOnly HiringDate { get; set; }
 
@@ -26,6 +27,6 @@ namespace C44_G00_EF02.Models
         public ICollection<Instructor> Instructors { get; set; } = new HashSet<Instructor>();
 
         [InverseProperty(nameof(Student.Department))]
-        public ICollection<Student>? Students { get; set; }= new HashSet<Student>();
+        public ICollection<Student>? Students { get; set; } = new HashSet<Student>();
     }
 }

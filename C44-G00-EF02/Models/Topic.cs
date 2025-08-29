@@ -14,6 +14,7 @@ namespace C44_G00_EF02.Models
         public int ID { get; set; }
         [MaxLength(100)]
         public string Name { get; set; }
+
         [InverseProperty(nameof(Course.Topic))]
         public ICollection<Course>? Courses { get; set; } = new HashSet<Course>();
 

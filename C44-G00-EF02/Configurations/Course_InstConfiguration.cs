@@ -16,9 +16,9 @@ namespace C44_G00_EF02.Configurations
             CI.HasKey(X => new {X.Course_Id,X.Inst_Id});
 
             CI
-                .HasOne(ci=>ci.Course)
-                .WithMany(c=>c.Course_Insts)
-                .HasForeignKey(ci=>ci.Course_Id)
+                .HasOne(ci => ci.Course)
+                .WithMany(c => c.Course_Insts)
+                .HasForeignKey(ci => ci.Course_Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
             CI

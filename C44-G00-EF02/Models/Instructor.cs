@@ -22,8 +22,10 @@ namespace C44_G00_EF02.Models
         public decimal HourRateBouns {  get; set; }
         [InverseProperty(nameof(Department.Manager))]
         public Department? MangedDepartment { get; set; }
+
         [InverseProperty(nameof(Department.Instructors))]
-        public Department InstructorDepartment { get; set; }
+        public Department InstructorDepartment { get; set; } = null!;
+
         [ForeignKey(nameof(InstructorDepartment))]
         public int Dept_ID { get; set; }
         [InverseProperty(nameof(Course_Inst.Instructor))]

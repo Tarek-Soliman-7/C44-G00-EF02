@@ -42,9 +42,6 @@ namespace C44_G00_EF02.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("StudentID")
-                        .HasColumnType("int");
-
                     b.Property<int>("Top_ID")
                         .HasColumnType("int");
 
@@ -53,11 +50,9 @@ namespace C44_G00_EF02.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("StudentID");
-
                     b.HasIndex("Top_ID");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("C44_G00_EF02.Models.Course_Inst", b =>
@@ -75,7 +70,7 @@ namespace C44_G00_EF02.Migrations
 
                     b.HasIndex("Inst_Id");
 
-                    b.ToTable("Course_Insts");
+                    b.ToTable("Course_Insts", (string)null);
                 });
 
             modelBuilder.Entity("C44_G00_EF02.Models.Department", b =>
@@ -106,7 +101,7 @@ namespace C44_G00_EF02.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Departments", t =>
+                    b.ToTable("Departments", null, t =>
                         {
                             t.HasCheckConstraint("CK_Department_HiringDate", "HiringDate <= GETDATE()");
                         });
@@ -142,7 +137,7 @@ namespace C44_G00_EF02.Migrations
 
                     b.HasIndex("Dept_ID");
 
-                    b.ToTable("Instructors");
+                    b.ToTable("Instructors", (string)null);
                 });
 
             modelBuilder.Entity("C44_G00_EF02.Models.Stud_Course", b =>
@@ -160,7 +155,7 @@ namespace C44_G00_EF02.Migrations
 
                     b.HasIndex("Course_Id");
 
-                    b.ToTable("Stud_Courses");
+                    b.ToTable("Stud_Courses", (string)null);
                 });
 
             modelBuilder.Entity("C44_G00_EF02.Models.Student", b =>
@@ -195,7 +190,7 @@ namespace C44_G00_EF02.Migrations
 
                     b.HasIndex("Dep_Id");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("C44_G00_EF02.Models.Topic", b =>
@@ -216,15 +211,26 @@ namespace C44_G00_EF02.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Topics");
+                    b.ToTable("Topics", (string)null);
+                });
+
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.Property<int>("CoursesID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CoursesID", "StudentsID");
+
+                    b.HasIndex("StudentsID");
+
+                    b.ToTable("CourseStudent", (string)null);
                 });
 
             modelBuilder.Entity("C44_G00_EF02.Models.Course", b =>
                 {
-                    b.HasOne("C44_G00_EF02.Models.Student", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("StudentID");
-
                     b.HasOne("C44_G00_EF02.Models.Topic", "Topic")
                         .WithMany("Courses")
                         .HasForeignKey("Top_ID")
@@ -304,6 +310,21 @@ namespace C44_G00_EF02.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.HasOne("C44_G00_EF02.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("C44_G00_EF02.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("C44_G00_EF02.Models.Course", b =>
                 {
                     b.Navigation("Course_Insts");
@@ -327,8 +348,6 @@ namespace C44_G00_EF02.Migrations
 
             modelBuilder.Entity("C44_G00_EF02.Models.Student", b =>
                 {
-                    b.Navigation("Courses");
-
                     b.Navigation("stud_courses");
                 });
 

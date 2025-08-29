@@ -22,8 +22,9 @@ namespace C44_G00_EF02.Models
         [Range(18,60,ErrorMessage ="Age must be between 18:60.")]
         public int Age { get; set; }
         public int Dep_Id { get; set; }
+
         [InverseProperty(nameof(Department.Students))]
-        public Department Department { get; set; }
+        public Department Department { get; set; } = null!;
 
         public ICollection<Course> Courses { get; set; } = new HashSet<Course>();
 

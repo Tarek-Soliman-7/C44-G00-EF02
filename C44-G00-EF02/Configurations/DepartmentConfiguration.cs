@@ -22,14 +22,14 @@ namespace C44_G00_EF02.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             D
-                .HasMany(D=>D.Instructors)
-                .WithOne(I=>I.InstructorDepartment)
-                .HasForeignKey(I=>I.Dept_ID)
+                .HasMany(D => D.Instructors)
+                .WithOne(I => I.InstructorDepartment)
+                .HasForeignKey(I => I.Dept_ID)
                 .OnDelete(DeleteBehavior.Restrict);
-            D   
-                .HasMany(D=>D.Students)
-                .WithOne(S=>S.Department)
-                .HasForeignKey(S=>S.Dep_Id)
+            D
+                .HasMany(D => D.Students)
+                .WithOne(S => S.Department)
+                .HasForeignKey(S => S.Dep_Id)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

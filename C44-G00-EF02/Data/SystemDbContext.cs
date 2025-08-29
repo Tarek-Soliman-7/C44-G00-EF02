@@ -10,7 +10,8 @@ namespace C44_G00_EF02.Data
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server = .; Database= Assignment02; Trusted_Connection=true; trustservercertificate=true ");
+            optionsBuilder.UseSqlServer("Server = .; Database= ITIEFCore; Trusted_Connection=true; trustservercertificate=true ");
+            //optionsBuilder.UseLazyLoadingProxies();
         }
 
         

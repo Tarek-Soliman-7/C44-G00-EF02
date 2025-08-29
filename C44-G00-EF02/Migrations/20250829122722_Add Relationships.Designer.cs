@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace C44_G00_EF02.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20250822134720_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250829122722_Add Relationships")]
+    partial class AddRelationships
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,6 +53,8 @@ namespace C44_G00_EF02.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
+                    b.HasIndex("Top_ID");
+
                     b.ToTable("Courses");
                 });
 
@@ -68,6 +70,8 @@ namespace C44_G00_EF02.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Course_Id", "Inst_Id");
+
+                    b.HasIndex("Inst_Id");
 
                     b.ToTable("Course_Insts");
                 });
@@ -92,6 +96,10 @@ namespace C44_G00_EF02.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("Ins_ID")
+                        .IsUnique()
+                        .HasFilter("[Ins_ID] IS NOT NULL");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -130,6 +138,8 @@ namespace C44_G00_EF02.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("Dept_ID");
+
                     b.ToTable("Instructors");
                 });
 
@@ -145,6 +155,8 @@ namespace C44_G00_EF02.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Stud_Id", "Course_Id");
+
+                    b.HasIndex("Course_Id");
 
                     b.ToTable("Stud_Courses");
                 });
@@ -179,6 +191,8 @@ namespace C44_G00_EF02.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("Dep_Id");
+
                     b.ToTable("Students");
                 });
 
@@ -201,6 +215,148 @@ namespace C44_G00_EF02.Migrations
                         .IsUnique();
 
                     b.ToTable("Topics");
+                });
+
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.Property<int>("CoursesID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CoursesID", "StudentsID");
+
+                    b.HasIndex("StudentsID");
+
+                    b.ToTable("CourseStudent");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Course", b =>
+                {
+                    b.HasOne("C44_G00_EF02.Models.Topic", "Topic")
+                        .WithMany("Courses")
+                        .HasForeignKey("Top_ID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Course_Inst", b =>
+                {
+                    b.HasOne("C44_G00_EF02.Models.Course", "Course")
+                        .WithMany("Course_Insts")
+                        .HasForeignKey("Course_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("C44_G00_EF02.Models.Instructor", "Instructor")
+                        .WithMany("Course_Insts")
+                        .HasForeignKey("Inst_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Instructor");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Department", b =>
+                {
+                    b.HasOne("C44_G00_EF02.Models.Instructor", "Manager")
+                        .WithOne("MangedDepartment")
+                        .HasForeignKey("C44_G00_EF02.Models.Department", "Ins_ID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Instructor", b =>
+                {
+                    b.HasOne("C44_G00_EF02.Models.Department", "InstructorDepartment")
+                        .WithMany("Instructors")
+                        .HasForeignKey("Dept_ID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("InstructorDepartment");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Stud_Course", b =>
+                {
+                    b.HasOne("C44_G00_EF02.Models.Course", "Course")
+                        .WithMany("stud_courses")
+                        .HasForeignKey("Course_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("C44_G00_EF02.Models.Student", "Student")
+                        .WithMany("stud_courses")
+                        .HasForeignKey("Stud_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Student", b =>
+                {
+                    b.HasOne("C44_G00_EF02.Models.Department", "Department")
+                        .WithMany("Students")
+                        .HasForeignKey("Dep_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.HasOne("C44_G00_EF02.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("C44_G00_EF02.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Course", b =>
+                {
+                    b.Navigation("Course_Insts");
+
+                    b.Navigation("stud_courses");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Department", b =>
+                {
+                    b.Navigation("Instructors");
+
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Instructor", b =>
+                {
+                    b.Navigation("Course_Insts");
+
+                    b.Navigation("MangedDepartment");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Student", b =>
+                {
+                    b.Navigation("stud_courses");
+                });
+
+            modelBuilder.Entity("C44_G00_EF02.Models.Topic", b =>
+                {
+                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }
